@@ -2,13 +2,26 @@
 import socket                                         
 import time
 
-def substract(num1, num2):
+#function for the  substraction
+def substraction(num1, num2):
     if num1 > num2:
         return num1-num2
     else:
         return num2-num1
-        
-    
+
+#function for the addition of two numbers
+def addition(num1,num2):
+    return num1+num2
+
+# get greatest commen diviser        
+def gcd(num1,num2):
+    while num2:
+        num1, num2 = num2, num1%num2
+    return num1
+
+# get the power of two numbers
+def power(num1,num2):
+    return num1**num2
 
 def getparams(data):
     param_string = data.split("\n")[2]
@@ -16,7 +29,10 @@ def getparams(data):
     
     arr = []
     for param in params:
-        arr.append(int(param.split("=")[1]))
+        arr.append(param.split("=")[1])
+    if (len(arr) != 2):
+        arr[1],arr[2]=int(arr[1]),int(arr[2])
+        print arr
     return arr
 # create a socket object
 serversocket = socket.socket(
@@ -42,11 +58,22 @@ while True:
     
     print(data) #.split("\n"))
     params = getparams(data)
-    
-    if not(len(params)==2):
+
+    if (len(params)<2):
         resp = "Parameter length doesn't match"
     else:
-        resp = str(substract(params[0],params[1]))
-    
+        method = params[0]
+        if(method=='add'):
+            resp = str(addition(params[1],params[2]))
+
+        if(method=='sub'):
+            resp = str(substraction(params[1],params[2]))
+
+        if(method=='gcd'):
+            resp = str(gcd(params[1],params[2]))
+        
+        if(method=='pow'):
+            resp = str(power(params[1],params[2]))
+        
     clientsocket.send(resp)
     clientsocket.close()

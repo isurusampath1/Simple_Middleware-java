@@ -65,14 +65,14 @@ public class Middleware{
     
     private String request(String service, String... params) throws IOException{
         
-        //request for addservice
+        //request for subserver
         if(service.equals("subserver")){
             //Send message to server
             String message = formatMessage(service, params);
             
             
             s_out.println( message );
-            //System.out.println("Message send");
+            System.out.println(">>>Request sent successfully...\n\nReply from server => ");
                 
                 
             //Get response from server
@@ -85,7 +85,7 @@ public class Middleware{
             return response;
         }
         
-        //add more services here
+       
         
         
         return "";
@@ -107,12 +107,12 @@ public class Middleware{
         
     }
     
-    public int subService(int num1, int num2) throws Exception{
+    public int subService(String method, String num1, String num2) throws Exception{
         int resp;
         try{
-            resp = Integer.parseInt(request("subserver", Integer.toString(num1), Integer.toString(num2)));
+            resp = Integer.parseInt(request("subserver", method,num1, num2));
         }catch(Exception e){
-            throw new Exception("Serive Error");
+            throw new Exception("Server Error");
         }
         return resp;
     }
